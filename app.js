@@ -40,7 +40,17 @@ app.get("/", (req, res) => {
   res.send("Home Page");
 });
 
-// passing the frontend
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://inex-suzj.onrender.com",
+    ],
+  })
+);
+
+
+// Passing the frontend
 // app.use(express.static(path.join(__dirname, "./frontend/build")));
 // app.get("*", function (_, res) {
 //   res.sendFile(
@@ -51,12 +61,3 @@ app.get("/", (req, res) => {
 //   );
 // });
 
-
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://inex-suzj.onrender.com",
-    ],
-  })
-);

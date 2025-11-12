@@ -35,7 +35,7 @@ app.use("/api/items", itemRoute);
 // Error Middleware
 app.use(errorHandler);
 
-Routes
+// Routes
 app.get("/", (req, res) => {
   res.send("Home Page");
 });

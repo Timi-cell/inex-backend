@@ -35,10 +35,10 @@ app.use("/api/items", itemRoute);
 // Error Middleware
 app.use(errorHandler);
 
-// Routes
-// app.get("/", (req, res) => {
-//   res.send("Home Page");
-// });
+Routes
+app.get("/", (req, res) => {
+  res.send("Home Page");
+});
 
 // passing the frontend
 app.use(express.static(path.join(__dirname, "./frontend/build")));

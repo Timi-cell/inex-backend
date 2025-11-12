@@ -21,6 +21,14 @@ mongoose
   })
   .catch((error) => console.log(error));
 
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://inex-suzj.onrender.com"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    // credentials: true, // needed for cookies or sessions
+  })
+);
+
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
@@ -40,16 +48,6 @@ app.get("/", (req, res) => {
   res.send("Home Page");
 });
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://inex-suzj.onrender.com",
-    ],
-  })
-);
-
-
 // Passing the frontend
 // app.use(express.static(path.join(__dirname, "./frontend/build")));
 // app.get("*", function (_, res) {
@@ -60,4 +58,3 @@ app.use(
 //     }
 //   );
 // });
-

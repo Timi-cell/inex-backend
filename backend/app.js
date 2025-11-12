@@ -41,12 +41,19 @@ app.get("/", (req, res) => {
 });
 
 // passing the frontend
-app.use(express.static(path.join(__dirname, "./frontend/build")));
-app.get("*", function (_, res) {
-  res.sendFile(
-    path.join(__dirname, "./frontend/build/index.html"),
-    function (err) {
-      res.status(500).send(err);
-    }
-  );
-});
+// app.use(express.static(path.join(__dirname, "./frontend/build")));
+// app.get("*", function (_, res) {
+//   res.sendFile(
+//     path.join(__dirname, "./frontend/build/index.html"),
+//     function (err) {
+//       res.status(500).send(err);
+//     }
+//   );
+// });
+
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://task-app-odld.onrender.com"],
+  })
+);

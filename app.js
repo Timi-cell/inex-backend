@@ -54,6 +54,9 @@ app.get("/", (req, res) => {
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://task-app-odld.onrender.com"],
+    origin: [
+      "http://localhost:3000",
+      "https://inex-suzj.onrender.com",
+    ],
   })
 );

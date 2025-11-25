@@ -50,8 +50,8 @@ const registerUser = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 86400), // 1 day
-    sameSite: "none",
-    secure: true,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
   });
 
   // Check if User was saved to the DB
@@ -89,8 +89,8 @@ const loginUser = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 86400), // 1 day
-    sameSite: "none",
-    secure: true,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
   });
 
   if (user && isPasswordCorrect) {
@@ -129,8 +129,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now(0)), // expire the cookie right away
-    sameSite: "none",
-    secure: true,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
   });
   return res.status(200).json({ message: "Successfully Logged Out" });
 });
@@ -257,12 +257,10 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const send_from = process.env.EMAIL_USER;
   try {
     await sendEmail(subject, message, send_to, send_from);
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Reset Email Sent, Please check your email.",
-      });
+    res.status(200).json({
+      success: true,
+      message: "Reset Email Sent, Please check your email.",
+    });
   } catch (error) {
     res.status(500);
     throw new Error("Email not sent, please try again");
@@ -333,8 +331,8 @@ const deleteUser = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now(0)), // expire the cookie right away
-    sameSite: "none",
-    secure: true,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
   });
 
   let user = await User.findById(req.user._id);

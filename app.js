@@ -23,7 +23,11 @@ mongoose
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://inex-suzj.onrender.com"],
+    origin:
+      process.env.NODE_ENV === "production"
+        ? ["https://yourfrontend.onrender.com"]
+        : ["http://localhost:3000"],
+    // origin: ["http://localhost:3000", "https://inex-suzj.onrender.com"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true, // needed for cookies or sessions
   })
@@ -40,7 +44,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/users", userRoute);
 app.use("/api/items", itemRoute);
 
-
 // Routes
 app.get("/", (req, res) => {
   res.send("Home Page");
@@ -48,7 +51,6 @@ app.get("/", (req, res) => {
 
 // Error Middleware
 app.use(errorHandler);
-
 
 // Passing the frontend
 // app.use(express.static(path.join(__dirname, "./frontend/build")));

@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -33,20 +33,22 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cors());
+// app.use(bodyParser.json());
+// app.use(cors());
 
 // Route MiddleWare
 app.use("/api/users", userRoute);
 app.use("/api/items", itemRoute);
 
-// Error Middleware
-app.use(errorHandler);
 
 // Routes
 app.get("/", (req, res) => {
   res.send("Home Page");
 });
+
+// Error Middleware
+app.use(errorHandler);
+
 
 // Passing the frontend
 // app.use(express.static(path.join(__dirname, "./frontend/build")));

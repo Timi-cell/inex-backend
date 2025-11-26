@@ -116,7 +116,6 @@ const registerUser = asyncHandler(async (req, res) => {
     .json({ _id, name: userName, email: userEmail, photo, phone });
 });
 
-
 // Login User
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;

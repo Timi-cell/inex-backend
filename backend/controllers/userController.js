@@ -17,52 +17,105 @@ const generateToken = (_id) => {
 };
 
 // Register User
+// const registerUser = asyncHandler(async (req, res) => {
+//   const { name, email, password, password2 } = req.body;
+//   if (!name || !email || !password) {
+//     res.status(400);
+//     throw new Error("Please fill in the required fields.");
+//   }
+//   if (password !== password2) {
+//     res.status(400);
+//     throw new Error("Passwords do not match!");
+//   }
+
+//   if (password.length < 6) {
+//     res.status(400);
+//     throw new Error("Password must be up to six characters.");
+//   }
+//   // Check if User exists
+//   const existingUser = await User.findOne({ email });
+//   if (existingUser) {
+//     res.status(400).json({ message: "User already exists" });
+//     throw new Error("User already exists.");
+//   }
+
+//   // Save User to DB
+//   const user = await User.create({ name, email, password });
+
+//   // Generate Token
+//   const token = generateToken(user._id);
+
+//   // Send HTTP-Only Token
+//   res.cookie("token", token, {
+//     path: "/",
+//     httpOnly: true,
+//     expires: new Date(Date.now() + 1000 * 86400), // 1 day
+//     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+//     secure: process.env.NODE_ENV === "production",
+//   });
+
+//   // Check if User was saved to the DB
+//   if (user) {
+//     const { _id, name, email, photo, phone } = user;
+//     res.status(201).json({ _id, name, email, photo, phone });
+//   } else {
+//     res.status(400).json({ message: "Invalid User Data" });
+//     throw new Error("Invalid User Data");
+//   }
+// });
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, password2 } = req.body;
-  if (!name || !email || !password) {
-    res.status(400);
-    throw new Error("Please fill in the required fields.");
-  }
-  if (password !== password2) {
-    res.status(400);
-    throw new Error("Passwords do not match!");
+
+  // 1️⃣ Validate required fields
+  if (!name || !email || !password || !password2) {
+    return res.status(400).json({ message: "Please fill in all fields." });
   }
 
-  if (password.length < 6) {
-    res.status(400);
-    throw new Error("Password must be up to six characters.");
+  // 2️⃣ Validate passwords match
+  if (password !== password2) {
+    return res.status(400).json({ message: "Passwords do not match." });
   }
-  // Check if User exists
+
+  // 3️⃣ Password length
+  if (password.length < 6) {
+    return res
+      .status(400)
+      .json({ message: "Password must be at least 6 characters." });
+  }
+
+  // 4️⃣ Check if user exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    res.status(400).json({ message: "User already exists" });
-    throw new Error("User already exists.");
+    return res.status(400).json({ message: "User already exists." });
   }
 
-  // Save User to DB
+  // 5️⃣ Create user (password will auto-hash via pre-save hook)
   const user = await User.create({ name, email, password });
+
+  if (!user) {
+    return res.status(400).json({ message: "Invalid user data." });
+  }
 
   // Generate Token
   const token = generateToken(user._id);
 
-  // Send HTTP-Only Token
+  // 7️⃣ Send HTTP-only cookie (environment-aware)
   res.cookie("token", token, {
     path: "/",
     httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 86400), // 1 day
+    expires: new Date(Date.now() + 1000 * 86400),
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     secure: process.env.NODE_ENV === "production",
   });
 
-  // Check if User was saved to the DB
-  if (user) {
-    const { _id, name, email, photo, phone } = user;
-    res.status(201).json({ _id, name, email, photo, phone });
-  } else {
-    res.status(400).json({ message: "Invalid User Data" });
-    throw new Error("Invalid User Data");
-  }
+  // 8️⃣ Return user data (without password)
+  const { _id, name: userName, email: userEmail, photo, phone } = user;
+  return res
+    .status(201)
+    .json({ _id, name: userName, email: userEmail, photo, phone });
 });
+
 
 // Login User
 const loginUser = asyncHandler(async (req, res) => {

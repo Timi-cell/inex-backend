@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 7000;
 const userRoute = require("./backend/routes/userRoute");
 const itemRoute = require("./backend/routes/itemRoute");
 const errorHandler = require("./backend/middlewares/errorMiddleWare");
+const sendEmail = require("./backend/utils/sendEmail");
 
 // Connect to mongodb and start server
 mongoose
@@ -47,6 +48,22 @@ app.use("/api/items", itemRoute);
 // Routes
 app.get("/", (req, res) => {
   res.send("Home Page");
+});
+
+app.get("/test-email", async (req, res) => {
+  try {
+    await sendEmail(
+      "Outlook SMTP Test",
+      "<h2>Hello Samuel, Outlook SMTP works! 🎉</h2>",
+      "youremail@gmail.com", // where you want to receive test mail
+      process.env.EMAIL_USER,
+      process.env.EMAIL_USER
+    );
+    res.send("Email sent successfully!");
+  } catch (err) {
+    console.log("Email Error:", err);
+    res.status(500).send(err);
+  }
 });
 
 // Error Middleware

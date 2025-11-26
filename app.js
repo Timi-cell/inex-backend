@@ -55,7 +55,7 @@ app.get("/test-email", async (req, res) => {
     await sendEmail(
       "Outlook SMTP Test",
       "<h2>Hello Samuel, Outlook SMTP works! 🎉</h2>",
-      "youremail@gmail.com", // where you want to receive test mail
+      "adedayotimilehin10@gmail.com",
       process.env.EMAIL_USER,
       process.env.EMAIL_USER
     );

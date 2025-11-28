@@ -24,13 +24,9 @@ mongoose
 
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? ["https://inex-suzj.onrender.com"]
-        : ["http://localhost:3000"],
-    // origin: ["http://localhost:3000", "https://inex-suzj.onrender.com"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    credentials: true, // needed for cookies or sessions
+    origin: ["https://inex-suzj.onrender.com"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
   })
 );
 

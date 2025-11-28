@@ -50,8 +50,8 @@ const registerUser = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 86400), // 1 day
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    secure: true,
   });
 
   // Check if User was saved to the DB
@@ -105,8 +105,8 @@ const registerUser = asyncHandler(async (req, res) => {
 //     path: "/",
 //     httpOnly: true,
 //     expires: new Date(Date.now() + 1000 * 86400),
-//     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-//     secure: process.env.NODE_ENV === "production",
+//     sameSite:"none",
+//     secure:true
 //   });
 
 //   // 8️⃣ Return user data (without password)
@@ -141,8 +141,8 @@ const loginUser = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 86400), // 1 day
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    secure: true,
   });
 
   if (user && isPasswordCorrect) {
@@ -181,8 +181,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now(0)), // expire the cookie right away
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    secure: true,
   });
   return res.status(200).json({ message: "Successfully Logged Out" });
 });
@@ -383,8 +383,8 @@ const deleteUser = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now(0)), // expire the cookie right away
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    secure: true,
   });
 
   let user = await User.findById(req.user._id);

@@ -118,63 +118,31 @@ const registerUser = asyncHandler(async (req, res) => {
 // });
 
 // Login User
-const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    res.status(400);
-    throw new Error("Please fill in the required fields.");
-  }
-  const user = await User.findOne({ email });
-  if (!user) {
-    res.status(400).json({ message: "User Not Found, Please signup" });
-    throw new Error("User Not Found, Please signup");
-  }
+ const loginUser = async (req, res) => {
+   const { email, password } = req.body;
 
-  const isPasswordCorrect = await bycrypt.compare(password, user.password);
+   const user = await User.findOne({ email });
+   if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
-  if (!isPasswordCorrect) {
-    res.status(400).json({ message: "Invalid Password" });
-    throw new Error("Invalid Password");
-  }
-  const token = generateToken(user._id);
+   const isPasswordCorrect = await bcrypt.compare(password, user.password);
+   if (!isPasswordCorrect)
+     return res.status(400).json({ message: "Invalid credentials" });
 
-  /*
-  res.cookie("token", token, {
-    path: "/",
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 86400), // 1 day
-    sameSite: "none",
-    secure: true,
-    domain: "inex-backend.onrender.com",
-  });
-  
+   // generate your token like before
+   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+     expiresIn: "7d",
+   });
 
-  if (user && isPasswordCorrect) {
-    const { _id, name, email, password, photo, phone } = user;
-    res.status(200).json({
-      _id,
-      name,
-      email,
-      password,
-      photo,
-      phone,
-    });
-  } else {
-    res.status(400).json({ message: "Invalid Email or Password" });
-    throw new Error("Invalid Email or Password");
-  }
-    */
-
-  res.status(200).json({
-    message: "Login successful",
-    token,
-    user: {
-      email: user.email,
-      name: user.name,
-    },
-  });
-});
-
+   res.status(200).json({
+     message: "Login successful",
+     token,
+     user: {
+       email: user.email,
+       name: user.name,
+     },
+   });
+ };
+ 
 // Get Login Status
 const loginStatus = asyncHandler(async (req, res) => {
   const token = req.cookies.token;

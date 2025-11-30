@@ -53,7 +53,6 @@ const updateItem = asyncHandler(async (req, res) => {
   if (updatedItem) {
     res.status(200).json(allItems);
   } else {
-    res.status(400).json({ message: "Item could not be updated" });
     throw new Error("Item could not be updated");
   }
 });

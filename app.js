@@ -11,6 +11,10 @@ const userRoute = require("./backend/routes/userRoute");
 const itemRoute = require("./backend/routes/itemRoute");
 const errorHandler = require("./backend/middlewares/errorMiddleWare");
 const sendEmail = require("./backend/utils/sendEmail");
+const frontendURL =
+  process.env.NODE_ENV === "production"
+    ? "https://inex-suzj.onrender.com"
+    : "http://localhost:3000";
 
 // Connect to mongodb and start server
 mongoose
@@ -24,7 +28,7 @@ mongoose
 
 app.use(
   cors({
-    origin: ["https://inex-suzj.onrender.com"],
+    origin: [frontendURL],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
@@ -46,21 +50,21 @@ app.get("/", (req, res) => {
   res.send("Home Page");
 });
 
-app.get("/test-email", async (req, res) => {
-  try {
-    await sendEmail(
-      "Outlook SMTP Test",
-      "<h2>Hello Samuel, Outlook SMTP works! 🎉</h2>",
-      "adedayotimilehin10@gmail.com",
-      process.env.EMAIL_USER,
-      process.env.EMAIL_USER
-    );
-    res.send("Email sent successfully!");
-  } catch (err) {
-    console.log("Email Error:", err);
-    res.status(500).send(err);
-  }
-});
+// app.get("/test-email", async (req, res) => {
+//   try {
+//     await sendEmail(
+//       "Outlook SMTP Test",
+//       "<h2>Hello Samuel, Outlook SMTP works! 🎉</h2>",
+//       "adedayotimilehin10@gmail.com",
+//       process.env.EMAIL_USER,
+//       process.env.EMAIL_USER
+//     );
+//     res.send("Email sent successfully!");
+//   } catch (err) {
+//     console.log("Email Error:", err);
+//     res.status(500).send(err);
+//   }
+// });
 
 // Error Middleware
 app.use(errorHandler);

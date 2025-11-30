@@ -138,6 +138,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
   const token = generateToken(user._id);
 
+  /*
   res.cookie("token", token, {
     path: "/",
     httpOnly: true,
@@ -146,6 +147,7 @@ const loginUser = asyncHandler(async (req, res) => {
     secure: true,
     domain: "inex-backend.onrender.com",
   });
+  
 
   if (user && isPasswordCorrect) {
     const { _id, name, email, password, photo, phone } = user;
@@ -161,6 +163,16 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(400).json({ message: "Invalid Email or Password" });
     throw new Error("Invalid Email or Password");
   }
+    */
+
+  res.status(200).json({
+    message: "Login successful",
+    token,
+    user: {
+      email: user.email,
+      name: user.name,
+    },
+  });
 });
 
 // Get Login Status

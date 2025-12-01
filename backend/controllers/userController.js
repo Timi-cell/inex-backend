@@ -53,7 +53,7 @@ const registerUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     secure: isProduction, // only true on HTTPS
-    sameSite: isProduction ? "None" : "lax", // "lax" works on localhost
+    sameSite: isProduction ? "None" : "Lax", // "Lax" works on localhost
   });
 
   // Check if User was saved to the DB
@@ -90,7 +90,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     secure: isProduction, // only true on HTTPS
-    sameSite: isProduction ? "None" : "lax", // "lax" works on localhost
+    sameSite: isProduction ? "None" : "Lax", // "Lax" works on localhost
   });
 
   if (user && isPasswordCorrect) {
@@ -130,7 +130,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     expires: new Date(0), // expire the cookie right away
     maxAge: 0,
     secure: isProduction, // only true on HTTPS
-    sameSite: isProduction ? "None" : "lax", // "lax" works on localhost
+    sameSite: isProduction ? "None" : "Lax", // "Lax" works on localhost
   });
   return res.status(200).json({ message: "Successfully Logged Out" });
 });
@@ -321,7 +321,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     expires: new Date(0), // expire the cookie right away
     maxAge: 0,
     secure: isProduction, // only true on HTTPS
-    sameSite: isProduction ? "None" : "lax", // "lax" works on localhost
+    sameSite: isProduction ? "None" : "Lax", // "Lax" works on localhost
   });
 
   let user = await User.findById(req.user._id);

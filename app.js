@@ -13,7 +13,7 @@ const errorHandler = require("./backend/middlewares/errorMiddleWare");
 const sendEmail = require("./backend/utils/sendEmail");
 const frontendURL =
   process.env.NODE_ENV === "production"
-    ? "https://inex-suzj.onrender.com"
+    ? "https://inexapp.vercel.app"
     : "http://localhost:3000";
 
 // Connect to mongodb and start server
